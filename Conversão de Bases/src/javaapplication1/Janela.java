@@ -138,12 +138,59 @@ public class Janela extends javax.swing.JDialog {
 
         //DECIMAL -> BINÁRIO
         if (boxEntrada.getSelectedIndex() == 1 && boxSaida.getSelectedIndex() == 0) {
-
-        }
+            int i = Integer.valueOf(textEntrada.getText());
+            int j = 0;
+            int aux = i;
+            String saida = "";
+            while(aux >= 2){
+                aux = i /2;
+                j = i % 2;
+                
+                saida = j + saida;
+                
+                i = aux;
+            }
+            saida = aux + saida;
+            System.out.println(saida); 
+            textSaida.setText(saida);
+         }
+        
 
         //DECIMAL -> HEXADECIMAL 
         if (boxEntrada.getSelectedIndex() == 1 && boxSaida.getSelectedIndex() == 2) {
-
+            int i = Integer.valueOf(textEntrada.getText());
+            int j = 0;
+            int aux = i;
+            String chare = "";
+            String saida = "";
+            while(aux >= 16){
+                aux = i /16;
+                j = i % 16;
+                
+                if(j==15){
+                    chare = "F";
+                }else if(j==14){
+                    chare = "E";
+                }else if(j==13){
+                    chare = "D";
+                }else if(j==12){
+                    chare = "C";
+                }else if(j==11){
+                    chare = "B";
+                }else if(j==10){
+                    chare = "A";
+                }else{
+                    chare = String.valueOf(j);
+                }
+                
+                
+                    saida = chare + saida;
+                
+                i = aux;
+            }
+            saida = aux + saida;
+            System.out.println(saida); 
+            textSaida.setText(saida);
         }
 
         //HEXADECIMAL -> BINÁRIO
@@ -155,9 +202,6 @@ public class Janela extends javax.swing.JDialog {
         if (boxEntrada.getSelectedIndex() == 2 && boxSaida.getSelectedIndex() == 1) {
 
         }
-
-        textEntrada.setText("OK!");
-        textSaida.setText("OK!");
     }//GEN-LAST:event_converterActionPerformed
 
     /**
