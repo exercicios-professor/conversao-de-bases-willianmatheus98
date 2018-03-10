@@ -123,22 +123,37 @@ public class Janela extends javax.swing.JDialog {
 
     private void textEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_textEntradaActionPerformed
     }//GEN-LAST:event_textEntradaActionPerformed
-
-    private void converterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_converterActionPerformed
-
-        //BINÁRIO -> DECIMAL 
-        if (boxEntrada.getSelectedIndex() == 0 && boxSaida.getSelectedIndex() == 1) {
-
-        }
-
-        //BINÁRIO -> HEXADECIMAL 
-        if (boxEntrada.getSelectedIndex() == 0 && boxSaida.getSelectedIndex() == 2) {
-
-        }
-
-        //DECIMAL -> BINÁRIO
-        if (boxEntrada.getSelectedIndex() == 1 && boxSaida.getSelectedIndex() == 0) {
-            int i = Integer.valueOf(textEntrada.getText());
+    
+    public String tabHexa(int dec){
+        String chare = "";
+        switch (dec) {
+                    case 15:
+                        chare = "F";
+                        break;
+                    case 14:
+                        chare = "E";
+                        break;
+                    case 13:
+                        chare = "D";
+                        break;
+                    case 12:
+                        chare = "C";
+                        break;
+                    case 11:
+                        chare = "B";
+                        break;
+                    case 10:
+                        chare = "A";
+                        break;
+                    default:
+                        chare = String.valueOf(dec);
+                        break;
+                }
+        return chare;
+    }
+    
+    public String decToBin(int dec){
+        int i = dec;
             int j = 0;
             int aux = i;
             String saida = "";
@@ -151,56 +166,123 @@ public class Janela extends javax.swing.JDialog {
                 i = aux;
             }
             saida = aux + saida;
-            System.out.println(saida); 
-            textSaida.setText(saida);
+            return saida;
+    }
+    
+    public String decToHexa(int dec){
+        int i = dec;
+            int j = 0;
+            int aux = i;
+            String chare = "";
+            String chare2 = "";
+            String saida = "";
+            while(aux >= 16){
+                aux = i /16;
+                j = i % 16;
+                
+                if(aux <16){
+                    chare2 = tabHexa(aux);
+                }
+                chare =  tabHexa(j);
+                saida = chare + saida;
+                
+                i = aux;
+            }
+            if(aux < 16 && aux >9){
+                saida = chare2 + saida;
+            }else{
+                saida = aux + saida;
+            }
+            
+            return saida;
+    }
+    
+    private void converterActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_converterActionPerformed
+
+        //BINÁRIO -> DECIMAL 
+        if (boxEntrada.getSelectedIndex() == 0 && boxSaida.getSelectedIndex() == 1) {
+            int convertido = 0;
+            int base = 1;
+            String ent = textEntrada.getText();
+            for(int j = ent.length()-1; j >= 0; j--){
+                System.out.println("j="+j+"ent.charAt="+ ent.charAt(j)+ "convertido="+convertido); 
+                if(ent.charAt(j)== '1'){
+                    convertido += (Math.pow(2, base)/2);
+                }
+                base++;
+            }
+           
+            textSaida.setText(String.valueOf(convertido));
+        }
+
+        //BINÁRIO -> HEXADECIMAL 
+        if (boxEntrada.getSelectedIndex() == 0 && boxSaida.getSelectedIndex() == 2) {
+            int convertido = 0;
+            int base = 1;
+            String ent = textEntrada.getText();
+            for(int j = ent.length()-1; j >= 0; j--){
+                 
+                if(ent.charAt(j)== '1'){
+                    convertido += (Math.pow(2, base)/2);
+                }
+                System.out.println("j="+j+"ent.charAt="+ ent.charAt(j)+ "convertido="+convertido);
+                base++;
+            }
+             if(convertido>9 && convertido < 16){
+                
+            
+            String chare = tabHexa(convertido);
+                textSaida.setText(String.valueOf(chare));
+            }else{
+                textSaida.setText(String.valueOf(decToHexa(convertido)));
+            }
+        }
+
+        //DECIMAL -> BINÁRIO
+        if (boxEntrada.getSelectedIndex() == 1 && boxSaida.getSelectedIndex() == 0) {
+            int i = Integer.valueOf(textEntrada.getText());
+            textSaida.setText(decToBin(i));
          }
         
 
         //DECIMAL -> HEXADECIMAL 
         if (boxEntrada.getSelectedIndex() == 1 && boxSaida.getSelectedIndex() == 2) {
             int i = Integer.valueOf(textEntrada.getText());
-            int j = 0;
-            int aux = i;
-            String chare = "";
-            String saida = "";
-            while(aux >= 16){
-                aux = i /16;
-                j = i % 16;
-                
-                if(j==15){
-                    chare = "F";
-                }else if(j==14){
-                    chare = "E";
-                }else if(j==13){
-                    chare = "D";
-                }else if(j==12){
-                    chare = "C";
-                }else if(j==11){
-                    chare = "B";
-                }else if(j==10){
-                    chare = "A";
-                }else{
-                    chare = String.valueOf(j);
-                }
-                
-                
-                    saida = chare + saida;
-                
-                i = aux;
+            if(i < 16){
+                String chare = tabHexa(i);
+                textSaida.setText(chare);
+            }else{
+                textSaida.setText(decToHexa(i));
             }
-            saida = aux + saida;
-            System.out.println(saida); 
-            textSaida.setText(saida);
+            
         }
 
         //HEXADECIMAL -> BINÁRIO
         if (boxEntrada.getSelectedIndex() == 2 && boxSaida.getSelectedIndex() == 0) {
-
+            int convertido = 0;
+            int base = 0;
+            String ent = textEntrada.getText();
+            for(int j = ent.length()-1; j >= 0; j--){
+                System.out.println("j="+j+"ent.charAt="+ ent.charAt(j)+ "convertido="+convertido); 
+                    convertido += Character.getNumericValue(ent.charAt(j)) * (Math.pow(16, base));
+                base++;
+            }
+           
+            textSaida.setText(String.valueOf(decToBin(convertido)));
         }
 
         //HEXADECIMAL -> DECIMAL
         if (boxEntrada.getSelectedIndex() == 2 && boxSaida.getSelectedIndex() == 1) {
-
+            int convertido = 0;
+            int base = 0;
+            String ent = textEntrada.getText();
+            for(int j = ent.length()-1; j >= 0; j--){
+                System.out.println("j="+j+"ent.charAt="+ ent.charAt(j)+ "convertido="+convertido); 
+                    convertido += Character.getNumericValue(ent.charAt(j)) * (Math.pow(16, base));
+                base++;
+            }
+           
+            textSaida.setText(String.valueOf(convertido));
         }
     }//GEN-LAST:event_converterActionPerformed
 
